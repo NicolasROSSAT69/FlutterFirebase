@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'add_movie_page.dart';
+import 'upd_movie_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,38 +96,89 @@ class _MoviesInformationState extends State<MoviesInformation> {
                 children: [
                   SizedBox(
                     width: 100,
-                    child: Image.network(movie['poster']),
+                    child: movie['poster'] != ""
+                        ? Image.network(movie['poster'])
+                        : const Text('Pas d\'image'),
                   ),
-                  SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            movie['name'],
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text('Année : ${movie['year'].toString()}'),
-                          Row(
-                            children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                iconSize: 20,
-                                onPressed: () {
-                                  addLike(document.id, movie['likes']);
-                                },
-                                icon: const Icon(Icons.thumb_up),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(movie['likes'].toString() + ' likes'),
-                            ],
-                          ),
-                        ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              movie['name'],
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text('Année : ${movie['year'].toString()}'),
+                            Row(
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  iconSize: 20,
+                                  onPressed: () {
+                                    addLike(document.id, movie['likes']);
+                                  },
+                                  icon: const Icon(Icons.thumb_up),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(movie['likes'].toString() + ' likes'),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          iconSize: 30,
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('Movies')
+                                .doc(document.id)
+                                .delete()
+                                .then((value) {
+                              print('Film supprimé');
+                            });
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          iconSize: 30,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return UpdPage(
+                                      idMovie: document.id, myObject: movie);
+                                },
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
