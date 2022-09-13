@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData.light(),
       title: 'Flutter Firebase',
       home: const HomePage(),
     );
@@ -46,6 +46,19 @@ class _MoviesInformationState extends State<MoviesInformation> {
   final Stream<QuerySnapshot> _moviesStream =
       FirebaseFirestore.instance.collection('Movies').snapshots();
 
+  void addLike(String docID, int likes) {
+    var newLiks = likes + 1;
+    try {
+      FirebaseFirestore.instance.collection('Movies').doc(docID).update({
+        'likes': newLiks,
+      }).then((value) {
+        print('Like ajouté');
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -63,9 +76,47 @@ class _MoviesInformationState extends State<MoviesInformation> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> movie =
                 document.data()! as Map<String, dynamic>;
-            return ListTile(
-              title: Text(movie['name']),
-              subtitle: Text(movie['poster']),
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Image.network(movie['poster']),
+                  ),
+                  SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            movie['name'],
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text('Année : ${movie['year'].toString()}'),
+                          Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                iconSize: 20,
+                                onPressed: () {
+                                  addLike(document.id, movie['likes']);
+                                },
+                                icon: const Icon(Icons.thumb_up),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(movie['likes'].toString() + ' likes'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }).toList(),
         );
