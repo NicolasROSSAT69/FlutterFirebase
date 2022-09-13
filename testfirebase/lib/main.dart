@@ -28,6 +28,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bibliothèque de films'),
+        leading: IconButton(
+            onPressed: () {
+              print('btn ajouter ok');
+            },
+            icon: const Icon(Icons.add)),
       ),
       body: const SingleChildScrollView(
         child: MoviesInformation(),
@@ -69,7 +74,7 @@ class _MoviesInformationState extends State<MoviesInformation> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Chargement");
+          return const Text("Chargement ...");
         }
 
         return Column(
