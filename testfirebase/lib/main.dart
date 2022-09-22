@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'add_movie_page.dart';
 import 'upd_movie_page.dart';
+import 'search_movie_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,20 @@ class HomePage extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.add)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const SearchMoviePage();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.search)),
+        ],
       ),
       body: const SingleChildScrollView(
         child: MoviesInformation(),
