@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddPage extends StatefulWidget {
@@ -12,6 +13,7 @@ class _AddPageState extends State<AddPage> {
   final nameController = TextEditingController();
   final yearController = TextEditingController();
   final posterController = TextEditingController();
+  List<String> categories = [];
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -46,7 +48,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -66,7 +68,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -82,6 +84,24 @@ class _AddPageState extends State<AddPage> {
                 ],
               ),
             ),
+            Container(
+              margin: new EdgeInsets.symmetric(vertical: 20.0),
+              child: DropDownMultiSelect(
+                onChanged: (List<String> x) {
+                  setState(() {
+                    categories = x;
+                  });
+                },
+                options: const [
+                  'Action',
+                  'Science-fition',
+                  'Aventure',
+                  'Comédie'
+                ],
+                selectedValues: categories,
+                whenEmpty: 'Catégorie',
+              ),
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
@@ -92,6 +112,7 @@ class _AddPageState extends State<AddPage> {
                   'year': yearController.value.text,
                   'poster': posterController.value.text,
                   'likes': 0,
+                  'categories': categories,
                 });
                 Navigator.pop(context);
               },

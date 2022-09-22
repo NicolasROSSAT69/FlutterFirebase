@@ -159,28 +159,6 @@ class _MoviesInformationState extends State<MoviesInformation> {
                           constraints: const BoxConstraints(),
                           iconSize: 30,
                           onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('Movies')
-                                .doc(document.id)
-                                .delete()
-                                .then((value) {
-                              print('Film supprimé');
-                            });
-                          },
-                          icon: const Icon(Icons.delete),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          iconSize: 30,
-                          onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (BuildContext context) {
@@ -192,6 +170,24 @@ class _MoviesInformationState extends State<MoviesInformation> {
                             );
                           },
                           icon: const Icon(Icons.edit),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          iconSize: 30,
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('Movies')
+                                .doc(document.id)
+                                .delete()
+                                .then((value) {
+                              print('Film supprimé');
+                            });
+                          },
+                          icon: const Icon(Icons.delete),
                         ),
                       ),
                     ],
