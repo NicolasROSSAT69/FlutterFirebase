@@ -21,99 +21,101 @@ class _AddPageState extends State<AddPage> {
       appBar: AppBar(
         title: const Text('Ajout de film'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black38, width: 1.5),
-              ),
-              title: Row(
-                children: [
-                  const Text('Nom: '),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  side: const BorderSide(color: Colors.black38, width: 1.5),
+                ),
+                title: Row(
+                  children: [
+                    const Text('Nom: '),
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: nameController,
                       ),
-                      controller: nameController,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black38, width: 1.5),
-              ),
-              title: Row(
-                children: [
-                  const Text('Année: '),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+              const SizedBox(height: 20),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  side: const BorderSide(color: Colors.black38, width: 1.5),
+                ),
+                title: Row(
+                  children: [
+                    const Text('Année: '),
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: yearController,
                       ),
-                      controller: yearController,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black38, width: 1.5),
-              ),
-              title: Row(
-                children: [
-                  const Text('Poster: '),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
+              const SizedBox(height: 20),
+              ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  side: const BorderSide(color: Colors.black38, width: 1.5),
+                ),
+                title: Row(
+                  children: [
+                    const Text('Poster: '),
+                    Expanded(
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        controller: posterController,
                       ),
-                      controller: posterController,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: new EdgeInsets.symmetric(vertical: 20.0),
-              child: DropDownMultiSelect(
-                onChanged: (List<String> x) {
-                  setState(() {
-                    categories = x;
+              Container(
+                margin: new EdgeInsets.symmetric(vertical: 20.0),
+                child: DropDownMultiSelect(
+                  onChanged: (List<String> x) {
+                    setState(() {
+                      categories = x;
+                    });
+                  },
+                  options: const ['ACT', 'SF', 'AVT', 'COM'],
+                  selectedValues: categories,
+                  whenEmpty: 'Catégorie',
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                onPressed: () {
+                  FirebaseFirestore.instance.collection('Movies').add({
+                    'name': nameController.value.text,
+                    'year': yearController.value.text,
+                    'poster': posterController.value.text,
+                    'likes': 0,
+                    'categories': categories,
                   });
+                  Navigator.pop(context);
                 },
-                options: const ['ACT', 'SF', 'AVT', 'COM'],
-                selectedValues: categories,
-                whenEmpty: 'Catégorie',
+                child: const Text('Ajouter'),
               ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-              ),
-              onPressed: () {
-                FirebaseFirestore.instance.collection('Movies').add({
-                  'name': nameController.value.text,
-                  'year': yearController.value.text,
-                  'poster': posterController.value.text,
-                  'likes': 0,
-                  'categories': categories,
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('Ajouter'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
