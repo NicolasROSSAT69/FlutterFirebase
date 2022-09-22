@@ -34,7 +34,7 @@ class _UpdPageState extends State<UpdPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -54,7 +54,7 @@ class _UpdPageState extends State<UpdPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -74,7 +74,7 @@ class _UpdPageState extends State<UpdPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.white30, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -90,25 +90,28 @@ class _UpdPageState extends State<UpdPage> {
                 ],
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
+            Container(
+              margin: new EdgeInsets.symmetric(vertical: 20.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('Movies')
+                      .doc(id)
+                      .update({
+                        'name': nameController.value.text,
+                        'year': yearController.value.text,
+                        'poster': posterController.value.text
+                      })
+                      .then((value) => print("Film modifié"))
+                      .catchError((error) => print(
+                          "Erreur lors de la modification du film: $error"));
+                  Navigator.pop(context);
+                },
+                child: const Text('Modifier'),
               ),
-              onPressed: () {
-                FirebaseFirestore.instance
-                    .collection('Movies')
-                    .doc(id)
-                    .update({
-                      'name': nameController.value.text,
-                      'year': yearController.value.text,
-                      'poster': posterController.value.text
-                    })
-                    .then((value) => print("Film modifié"))
-                    .catchError((error) => print(
-                        "Erreur lors de la modification du film: $error"));
-                Navigator.pop(context);
-              },
-              child: const Text('Modifier'),
             ),
           ],
         ),

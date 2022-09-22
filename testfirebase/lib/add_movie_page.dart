@@ -28,7 +28,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -48,7 +48,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -68,7 +68,7 @@ class _AddPageState extends State<AddPage> {
             ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
-                side: const BorderSide(color: Colors.black, width: 1.5),
+                side: const BorderSide(color: Colors.black38, width: 1.5),
               ),
               title: Row(
                 children: [
@@ -92,12 +92,7 @@ class _AddPageState extends State<AddPage> {
                     categories = x;
                   });
                 },
-                options: const [
-                  'Action',
-                  'Science-fition',
-                  'Aventure',
-                  'Comédie'
-                ],
+                options: const ['ACT', 'SF', 'AVT', 'COM'],
                 selectedValues: categories,
                 whenEmpty: 'Catégorie',
               ),
