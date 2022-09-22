@@ -116,6 +116,22 @@ class _MoviesInformationState extends State<MoviesInformation> {
                             Text('Année : ${movie['year'].toString()}'),
                             Row(
                               children: [
+                                for (final categorie in movie['categories'])
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Chip(
+                                      backgroundColor: Colors.lightBlue,
+                                      label: Text(
+                                        categorie,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            Row(
+                              children: [
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
