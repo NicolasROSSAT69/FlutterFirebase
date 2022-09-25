@@ -107,107 +107,110 @@ class _MoviesInformationState extends State<MoviesInformation> {
                 document.data()! as Map<String, dynamic>;
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: movie['poster'] != ""
-                        ? Image.network(movie['poster'])
-                        : const Text('Pas d\'image'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              movie['name'],
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Text('Année : ${movie['year'].toString()}'),
-                            Row(
-                              children: [
-                                for (final categorie in movie['categories'])
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: Chip(
-                                      backgroundColor: Colors.lightBlue,
-                                      label: Text(
-                                        categorie,
-                                        style: const TextStyle(
-                                            color: Colors.white),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: movie['poster'] != ""
+                          ? Image.network(movie['poster'])
+                          : const Text('Pas d\'image'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                movie['name'],
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text('Année : ${movie['year'].toString()}'),
+                              Row(
+                                children: [
+                                  for (final categorie in movie['categories'])
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: Chip(
+                                        backgroundColor: Colors.lightBlue,
+                                        label: Text(
+                                          categorie,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
                                       ),
                                     ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints(),
+                                    iconSize: 20,
+                                    onPressed: () {
+                                      addLike(document.id, movie['likes']);
+                                    },
+                                    icon: const Icon(Icons.thumb_up),
                                   ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  iconSize: 20,
-                                  onPressed: () {
-                                    addLike(document.id, movie['likes']);
-                                  },
-                                  icon: const Icon(Icons.thumb_up),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(movie['likes'].toString() + ' likes'),
-                              ],
-                            ),
-                          ],
+                                  const SizedBox(width: 10),
+                                  Text(movie['likes'].toString() + ' likes'),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          iconSize: 30,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return UpdPage(
-                                      idMovie: document.id, myObject: movie);
-                                },
-                                fullscreenDialog: true,
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.edit),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            iconSize: 30,
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return UpdPage(
+                                        idMovie: document.id, myObject: movie);
+                                  },
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          iconSize: 30,
-                          onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('Movies')
-                                .doc(document.id)
-                                .delete()
-                                .then((value) {
-                              print('Film supprimé');
-                            });
-                          },
-                          icon: const Icon(Icons.delete),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            iconSize: 30,
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('Movies')
+                                  .doc(document.id)
+                                  .delete()
+                                  .then((value) {
+                                print('Film supprimé');
+                              });
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           }).toList(),
